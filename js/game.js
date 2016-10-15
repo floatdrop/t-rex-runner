@@ -105,23 +105,23 @@ var IS_TOUCH_ENABLED = 'ontouchstart' in window;
  */
 Runner.config = {
   ACCELERATION: 0.001,
-  BG_CLOUD_SPEED: 0.2,
+  BG_CLOUD_SPEED: 0.7,
   BOTTOM_PAD: 10,
   CLEAR_TIME: 3000,
-  CLOUD_FREQUENCY: 0.5,
+  CLOUD_FREQUENCY: 0.1,
   GAMEOVER_CLEAR_TIME: 750,
   GAP_COEFFICIENT: 0.6,
-  GRAVITY: 0.3,
-  INITIAL_JUMP_VELOCITY: 12,
-  MAX_CLOUDS: 6,
+  GRAVITY: 0.1,
+  INITIAL_JUMP_VELOCITY: 24,
+  MAX_CLOUDS: 100,
   MAX_OBSTACLE_LENGTH: 3,
-  MAX_OBSTACLE_DUPLICATION: 2,
+  MAX_OBSTACLE_DUPLICATION: 4,
   MAX_SPEED: 13,
   MIN_JUMP_HEIGHT: 35,
   MOBILE_SPEED_COEFFICIENT: 1.2,
   RESOURCE_TEMPLATE_ID: 'audio-resources',
-  SPEED: 6,
-  SPEED_DROP_COEFFICIENT: 3
+  SPEED: 12,
+  SPEED_DROP_COEFFICIENT: 6
 };
 
 
@@ -195,6 +195,8 @@ Runner.sounds = {
  */
 Runner.keycodes = {
   JUMP: {'38': 1, '32': 1},  // Up, spacebar
+  LEFT: {'37': 1},  // Up, spacebar
+  RIGHT: {'39': 1},  // Up, spacebar
   DUCK: {'40': 1},  // Down
   RESTART: {'13': 1}  // Enter
 };
@@ -686,6 +688,14 @@ Runner.prototype = {
         // Duck.
         this.tRex.setDuck(true);
       }
+    }
+
+    if (this.activated && !this.crashed && Runner.keycodes.LEFT[e.keyCode]) {
+      this.updateConfigSetting('SPEED', this.config.SPEED - 1);
+    }
+
+    if (this.activated && !this.crashed && Runner.keycodes.RIGHT[e.keyCode]) {
+      this.updateConfigSetting('SPEED', this.config.SPEED + 1);
     }
   },
 
@@ -2339,9 +2349,9 @@ function Horizon(canvas, spritePos, dimensions, gapCoefficient) {
 Horizon.config = {
   BG_CLOUD_SPEED: 0.2,
   BUMPY_THRESHOLD: .3,
-  CLOUD_FREQUENCY: .5,
+  CLOUD_FREQUENCY: 1,
   HORIZON_HEIGHT: 16,
-  MAX_CLOUDS: 6
+  MAX_CLOUDS: 100
 };
 
 
